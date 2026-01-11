@@ -91,43 +91,30 @@ export default function App() {
   return (
     <>
       <NavigationBar movies={movies} />
-      <MainSection movies={movies} />
+      <MainSection>
+        <MoviesList movies={movies} />
+      </MainSection>
     </>
   );
 }
 
-function MainSection({ movies }) {
+function MainSection({ children }) {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen1, setIsOpen1] = useState(true);
   const [isOpen2, setIsOpen2] = useState(true);
 
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
   return (
     <main className="main">
       <div className="box">
         <ToggleOpenClosedButton isOpen={isOpen1} setIsOpen={setIsOpen1} />
-        {isOpen1 && (
-          <MoviesList
-            movies={movies}
-            watched={watched}
-            setWatched={setWatched}
-          />
-        )}
+        {isOpen1 && children}
       </div>
 
       <div className="box">
         <ToggleOpenClosedButton isOpen={isOpen2} setIsOpen={setIsOpen2} />
         {isOpen2 && (
           <>
-            <WatchedMovieSummary
-              watched={watched}
-              avgImdbRating={avgImdbRating}
-              avgUserRating={avgUserRating}
-              avgRuntime={avgRuntime}
-            />
-
+            <WatchedMovieSummary watched={watched} />
             <WatchedMovieList watched={watched} />
           </>
         )}
@@ -200,12 +187,10 @@ function WatchedMovie({ movie }) {
   );
 }
 
-function WatchedMovieSummary({
-  watched,
-  avgImdbRating,
-  avgUserRating,
-  avgRuntime,
-}) {
+function WatchedMovieSummary({ watched }) {
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgRuntime = average(watched.map((movie) => movie.runtime));
   return (
     <div className="summary">
       <h2>Movies you watched</h2>
