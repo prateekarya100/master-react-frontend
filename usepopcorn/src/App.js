@@ -69,14 +69,8 @@ function SearchBar() {
     />
   );
 }
-function NavigationBar({ movies }) {
-  return (
-    <nav className="nav-bar">
-      <LogoSection />
-      <SearchBar />
-      <TotalCountMovieStat movies={movies} />
-    </nav>
-  );
+function NavigationBar({ children }) {
+  return <nav className="nav-bar">{children}</nav>;
 }
 function TotalCountMovieStat({ movies }) {
   return (
@@ -90,7 +84,14 @@ export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   return (
     <>
-      <NavigationBar movies={movies} />
+      {/* COMPONENTS COMPOSITION SOLVED PROPS DRILLING PROBLEM */}
+      <NavigationBar>
+        <LogoSection />
+        <SearchBar />
+        <TotalCountMovieStat movies={movies} />
+      </NavigationBar>
+
+      {/* COMPONENTS COMPOSITION SOLVED PROPS DRILLING PROBLEM */}
       <MainSection>
         <MoviesList movies={movies} />
       </MainSection>
